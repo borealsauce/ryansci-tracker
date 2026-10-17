@@ -51,9 +51,8 @@ tr.ft td,tr:last-child td{font-weight:700}
 .spark{position:fixed;width:7px;height:7px;border-radius:2px;pointer-events:none;z-index:99}
 @media(prefers-reduced-motion:reduce){.fx-in{animation:none;opacity:1}.shim{animation:none}.bar i,.ring .fg{transition:none}.card:hover{transform:none}}</style><style>.lg{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:middle}.stk{display:flex;height:8px;border-radius:9px;overflow:hidden;background:#1c1c1c;min-width:140px;margin-top:3px}.stk i{display:block;height:100%;width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}@media(prefers-reduced-motion:reduce){.stk i{transition:none}}</style><style>.chart svg{width:100%;height:auto}.chart text{fill:#a3a3a3;font:10px Inter}.chart rect{transition:height .9s cubic-bezier(.2,.8,.2,1),y .9s cubic-bezier(.2,.8,.2,1)}tr.open td{background:#e8b92322!important}tr.open td:first-child{border-left:3px solid #e8b923}.st{padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase}.st.paid{background:#22c55e22;color:#22c55e}.st.overdue{background:#ff2d3a22;color:#ff2d3a}.st.sent{background:#e8b92322;color:#e8b923}@media(prefers-reduced-motion:reduce){.chart rect{transition:none}}</style>
 <body>
-<div id="gate"><form onsubmit="go(event)"><h1>Ryan Sci Tracker</h1><p class="muted">Enter password</p><input id="pw" type="password" autofocus><button>Open</button><div id="err" class="neg"></div></form></div>
 <div class="top"><div class="wrap"><h1>Ryan Sci Tracker</h1><div class="muted">Ryan Scientific Inc. · <span id="gen"></span></div></div></div>
-<div class="wrap" id="app" style="display:none"><div class="pills" id="tabs" style="margin-top:16px"><button class="pill" data-t="O">Overview</button><button class="pill" data-t="P">P&amp;L</button><button class="pill" data-t="C">Customers</button><button class="pill" data-t="I">Invoices &amp; AR</button></div>
+<div class="wrap" id="app"><div class="pills" id="tabs" style="margin-top:16px"><button class="pill" data-t="O">Overview</button><button class="pill" data-t="P">P&amp;L</button><button class="pill" data-t="C">Customers</button><button class="pill" data-t="I">Invoices &amp; AR</button></div>
 <section data-s="O"><h2>2026 YTD</h2><div class="cards" id="cards"></div>
 <h2>Annual P&amp;L</h2><div class="scroll" id="tA"></div>
 <h2>Cash &amp; Cards</h2><div class="scroll" id="tCash"></div></section>
@@ -100,6 +99,5 @@ function fx(){document.querySelectorAll('#app section:not([style*="none"]) :is(h
 function view(t){document.querySelectorAll('#tabs .pill').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('section[data-s]').forEach(x=>x.style.display=x.dataset.s===t?'':'none');
  document.querySelectorAll('.fx-in').forEach(e=>{e.classList.remove('fx-in');void e.offsetWidth});localStorage.rstab=t;render();fx();}
 document.addEventListener('click',e=>{const b=e.target.closest('#tabs .pill');if(b)view(b.dataset.t);const y=e.target.closest('#yrs .pill');if(y){yr=localStorage.rsyr=y.dataset.y;chart();fx()}});
-async function go(e){e.preventDefault();try{D=await decrypt(document.getElementById('pw').value);sessionStorage.rspw=document.getElementById('pw').value;document.getElementById('gate').remove();document.getElementById('app').style.display='';view(localStorage.rstab||'O');}catch(x){document.getElementById('err').textContent='Wrong password';}}
-if(sessionStorage.rspw){document.getElementById('pw').value=sessionStorage.rspw;go(new Event('submit'));}
+(async()=>{D=await (await fetch('data.json',{cache:'no-store'})).json();view(localStorage.rstab||'O');})();
 </script></body></html>
